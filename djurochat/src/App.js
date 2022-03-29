@@ -1,16 +1,18 @@
 import './App.css';
 import { useState, useEffect } from "react";
-import unesiIme from './mojeKutije/unesiIme';
-import unesiBoju from './mojeKutije/unesiBoju';
+import UnesiIme from './mojeKutije/UnesiIme';
+import UnesiBoju from './mojeKutije/UnesiBoju';
+import UnosPoruka from './mojeKutije/unosPoruka';
+import Poruka from './mojeKutije/Poruka'
+import UnosKorisnika from './mojeKutije/UnosKorisnika';
 
 
 function App() {
-  const [korIme, setKorIme] = useState({
-    korIme=unesiIme()
-  });
-  const [korBoja, setKorBoja] = useState({
-    korBoja=unesiBoju()
-  })
+  const [korIme, setKorIme] = useState('Djuro')
+  const [korBoja, setKorBoja] = useState('#000000')
+//  korIme = unesiIme()
+//  korBoja = unesiBoju()
+
   const [poruke, setPoruke] = useState ([])
   const [drone, setDrone] = useState()
   const [korisnici, setKorisnici] = useState()
@@ -18,7 +20,7 @@ function App() {
 //  <script src='https://cdn.scaledrone.com/scaledrone.min.js' type='text/javascript'></script>
 useEffect(() => {
   const drone = new window.Scaledrone("Ugs3Awd0UMrcGwF9", {
-    data: user,
+    data: korIme,
   });
   setDrone(drone);
   // eslint-disable-next-line
@@ -41,26 +43,26 @@ if (drone) {
     });
 
     chatRoom.on("data", (text, chatUser) => {
-       setUsers(drone.clientId);
+       setKorisnici(drone.clientId);
       
 
       const username = chatUser.clientData.username;
       const chatUserID = chatUser.id;
       const userColor = chatUser.clientData.randomColor
       
-      setMessages((oldArray) => [
+      setPoruke((oldArray) => [
         ...oldArray,
-        { text, username, userColor, chatUserID, user },
+        { text, username, userColor, chatUserID, korIme },
       ]);
     });
   });
 }
 
-const onSendMessage = (message) => {
-  if (message) {
+const zaSlanjePoruka = (poruka) => {
+  if (poruka) {
     drone.publish({
       room: "mala-sobica",
-      message,
+      poruka,
     });
   }
 };
@@ -68,10 +70,11 @@ const onSendMessage = (message) => {
 return (
   <div className="App">
     <div className="App-header">
-      <h1>Moja čet aplikatzia</h1>
+      <h1>Moja čat aplikatzia</h1>
     </div>
-    <Message poruke={poruke} korisnici={korisnici}/>
-    <Input onSendMessage={onSendMessage} />
+    <UnosKorisnika korIme={korIme} korBoja={korBoja}/>
+    <Poruka poruke={poruke} korisnici={korisnici}/>
+    <UnosPoruka zaSlanjePoruka={zaSlanjePoruka} />
   </div>
 );
 }
