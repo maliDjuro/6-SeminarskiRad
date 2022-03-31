@@ -1,17 +1,22 @@
 import './App.css';
 import { useState, useEffect } from "react";
-import UnesiIme from './mojeKutije/UnesiIme';
-import UnesiBoju from './mojeKutije/UnesiBoju';
-import UnosPoruka from './mojeKutije/unosPoruka';
-import Poruka from './mojeKutije/Poruka'
-import UnosKorisnika from './mojeKutije/UnosKorisnika';
+import UnosPoruka from './mojeKutije/UnosPoruka';
+import SvePoruke from './mojeKutije/SvePoruke'
+import UnosKorisnika from './mojeKutije/UnosKorisnika'
 
 
 function App() {
+  const color='#00FF00'
+  const [korUnesen, setKorUnesen]=useState(false)
   const [korIme, setKorIme] = useState('Djuro')
-  const [korBoja, setKorBoja] = useState('#000000')
+  const [korBoja, setKorBoja] = useState('#00FF00')
 //  korIme = unesiIme()
 //  korBoja = unesiBoju()
+
+  const [korisnik, setKorisnik] = useState({
+    username: korIme,
+    randomColor: korBoja
+  })
 
   const [poruke, setPoruke] = useState ([])
   const [drone, setDrone] = useState()
@@ -19,21 +24,26 @@ function App() {
 // ovo je u public/index.html
 //  <script src='https://cdn.scaledrone.com/scaledrone.min.js' type='text/javascript'></script>
 useEffect(() => {
+if(korUnesen){
   const drone = new window.Scaledrone("Ugs3Awd0UMrcGwF9", {
-    data: korIme,
+    data: korisnik,
   });
   setDrone(drone);
+}
   // eslint-disable-next-line
-}, []);
+}, [korUnesen]);
+
+
 if (drone) {
   drone.on("open", (error) => {
     if (error) {
       console.log("Pogreška u spajanju", error);
+    } else {
     }
 
    
 
-    const chatRoom = drone.subscribe("mala-sobica");
+    const chatRoom = drone.subscribe("observable-room");
 
     chatRoom.on("open", (error) => {
       if (error) {
@@ -44,7 +54,6 @@ if (drone) {
 
     chatRoom.on("data", (text, chatUser) => {
        setKorisnici(drone.clientId);
-      
 
       const username = chatUser.clientData.username;
       const chatUserID = chatUser.id;
@@ -52,31 +61,65 @@ if (drone) {
       
       setPoruke((oldArray) => [
         ...oldArray,
-        { text, username, userColor, chatUserID, korIme },
+        { text, username, userColor, chatUserID, korisnik },
       ]);
     });
   });
 }
 
-const zaSlanjePoruka = (poruka) => {
+const onSendMessage = (poruka) => {
   if (poruka) {
     drone.publish({
-      room: "mala-sobica",
-      poruka,
+      room: "observable-room",
+      message: poruka,
     });
   }
+  console.log('Poruka', poruka);
 };
+
+function naPromjenu(e) {
+  setKorIme(e.target.value);
+  console.log('promijenilo se ime');
+}
+
+function onSubmit(e) {
+  e.preventDefault();
+  setKorIme(e.target.value);
+}
+
+
+useEffect(()=>{
+  setKorisnik({username: korIme, randomColor: korBoja})
+  console.log(korIme, korBoja);
+}, [korUnesen,  korIme, korBoja])
+
 
 return (
   <div className="App">
     <div className="App-header">
       <h1>Moja čat aplikatzia</h1>
+      {console.log(korUnesen)}
     </div>
-    <UnosKorisnika korIme={korIme} korBoja={korBoja}/>
-    <Poruka poruke={poruke} korisnici={korisnici}/>
-    <UnosPoruka zaSlanjePoruka={zaSlanjePoruka} />
-  </div>
-);
+{/* Ovdje unosimo ime i boju korisnika */}
+
+    {
+    (korUnesen===false) ?
+    <>
+      <div className="unosKor">
+      <UnosKorisnika korIme={korIme} korBoja={korBoja} setKorIme={setKorIme} setKorBoja={setKorBoja} setKorUnesen={setKorUnesen} />
+      </div>
+      <div>
+        {console.log('unijo korisnika')}
+      </div>
+    </>
+    :
+    <>
+      {/* <UnosKorisnika korIme={korIme} korBoja={korBoja}/> */}
+      <SvePoruke poruke={poruke} korisnici={korisnici}/>
+      <UnosPoruka onSendMessage={onSendMessage} />
+    </>
+}</div>);
+
 }
 
 export default App;

@@ -30,20 +30,21 @@ function padZero(str, len) {
 
   return (
     <div>
-      <ul className="Lista-poruka">
+      <div className="Lista-poruka">
         {poruke.map((poruka) => (
           <div key={poruke.indexOf(poruka)} className={(poruka.chatUserID === korisnici) ? "Messages-message currentMember" : "Messages-message"}>
             <span
               className="avatar"
             />
-            <div className="Sadrzaj-poruke" style={{ backgroundColor: `${poruka.userColor}`, color: `${invertColor(poruka.userColor)}`, border: `2px dotted ${invertColor(poruka.userColor)}`, borderRadius: '10px'}}>
+            {console.log(invertColor(poruka.userColor))}
+            <div className="Sadrzaj-poruke" style={{ backgroundColor: `${poruka.userColor}`, foregroundColor: `${invertColor(poruka.userColor)}`, border: `2px dotted`, borderRadius: '10px'}}>
               <div className="korisnik">{poruka.username}:</div>
               <div className="tekst">{poruka.text}</div>
             </div>
             
           </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
