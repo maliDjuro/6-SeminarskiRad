@@ -37,7 +37,7 @@ if(korUnesen){
 if (drone) {
   drone.on("open", (error) => {
     if (error) {
-      console.log("Pogreška u spajanju", error);
+      // console.log("Pogreška u spajanju", error);
     } else {
     }
 
@@ -75,12 +75,12 @@ const onSendMessage = (poruka) => {
       message: poruka,
     });
   }
-  console.log('Poruka', poruka);
+  // console.log('Poruka', poruka);
 };
 
 function naPromjenu(e) {
   setKorIme(e.target.value);
-  console.log('promijenilo se ime');
+  // console.log('promijenilo se ime');
 }
 
 function onSubmit(e) {
@@ -91,7 +91,7 @@ function onSubmit(e) {
 
 useEffect(()=>{
   setKorisnik({username: korIme, randomColor: korBoja})
-  console.log(korIme, korBoja);
+  // console.log(korIme, korBoja);
 }, [korUnesen,  korIme, korBoja])
 
 
@@ -99,7 +99,7 @@ return (
   <div className="App">
     <div className="App-header">
       <h1>Moja čat aplikatzia</h1>
-      {console.log(korUnesen)}
+      {/* {console.log(korUnesen)} */}
     </div>
 {/* Ovdje unosimo ime i boju korisnika */}
 
@@ -110,7 +110,7 @@ return (
       <UnosKorisnika korIme={korIme} korBoja={korBoja} setKorIme={setKorIme} setKorBoja={setKorBoja} setKorUnesen={setKorUnesen} />
       </div>
       <div>
-        {console.log('unijo korisnika')}
+        {/* {console.log('unijo korisnika')} */}
       </div>
     </>
     :

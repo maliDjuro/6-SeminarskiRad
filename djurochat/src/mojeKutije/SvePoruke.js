@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 const SvePoruke = ({ poruke, korisnici }) => {
-  console.log(poruke, korisnici)
+  // console.log(poruke, korisnici)
   function invertColor(hex) {
     if (hex.indexOf('#') === 0) {
         hex = hex.slice(1);
@@ -36,10 +36,10 @@ function padZero(str, len) {
             <span
               className="avatar"
             />
-            {console.log(invertColor(poruka.userColor))}
-            <div className="Sadrzaj-poruke" style={{ backgroundColor: `${poruka.userColor}`, foregroundColor: `${invertColor(poruka.userColor)}`, border: `2px dotted`, borderRadius: '10px'}}>
+            {/* {console.log(poruka.userColor,':', invertColor(poruka.userColor))} */}
+            <div className="Sadrzaj-poruke" style={{ backgroundColor: `${poruka.userColor}`, color: `${invertColor(poruka.userColor)}`, border: `2px dotted`, borderRadius: '10px'}}>
               <div className="korisnik">{poruka.username}:</div>
-              <div className="timestamp">{message.timeStamp.getHours()}:{message.timeStamp.getMinutes()}</div>
+              <div className="timestamp">{poruka.timeStamp.getHours()}:{poruka.timeStamp.getMinutes()}</div>
               <div className="tekst">{poruka.text}</div>
             </div>
             
