@@ -1,4 +1,4 @@
-import './App.css';
+import './styles/stilovi.scss';
 import { useState, useEffect } from "react";
 import UnosPoruka from './mojeKutije/UnosPoruka';
 import SvePoruke from './mojeKutije/SvePoruke'
@@ -58,10 +58,11 @@ if (drone) {
       const username = chatUser.clientData.username;
       const chatUserID = chatUser.id;
       const userColor = chatUser.clientData.randomColor
+      const timeStamp = new Date()
       
       setPoruke((oldArray) => [
         ...oldArray,
-        { text, username, userColor, chatUserID, korisnik },
+        { text, username, userColor, chatUserID, korisnik, timeStamp },
       ]);
     });
   });

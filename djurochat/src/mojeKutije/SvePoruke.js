@@ -39,6 +39,7 @@ function padZero(str, len) {
             {console.log(invertColor(poruka.userColor))}
             <div className="Sadrzaj-poruke" style={{ backgroundColor: `${poruka.userColor}`, foregroundColor: `${invertColor(poruka.userColor)}`, border: `2px dotted`, borderRadius: '10px'}}>
               <div className="korisnik">{poruka.username}:</div>
+              <div className="timestamp">{message.timeStamp.getHours()}:{message.timeStamp.getMinutes()}</div>
               <div className="tekst">{poruka.text}</div>
             </div>
             
