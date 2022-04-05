@@ -16,7 +16,6 @@ const UnosKorisnika = ({ korIme, korBoja, setKorIme, setKorBoja, setKorUnesen })
 
   return (
     <div className="Input">
-      {/* <ColorPicker initialColor="#00FF00" onChange={(color => setKorBoja(color.hex))} size={300} /> */}
         <input
             onChange={(e) => onColor(e)}
             value={korBoja}
